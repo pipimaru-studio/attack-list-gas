@@ -1,19 +1,4 @@
-// ----------------【重複チェックシートのリセット】---------------- 
-function resetDuplicateCheckSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName("重複企業チェック");
-
-  const lastRow = sheet.getLastRow();
-  if (lastRow < 2) return;  // データがなければ終了
-
-  // 2行目以降のA〜D列のデータを削除
-  sheet.getRange("A2:D" + lastRow).clearContent();
-
-  // 背景色だけをデフォルト（null)に戻す
-  const range = sheet.getRange("A2:D" + lastRow);
-  const defaultBackgrounds = Array.from({ length: lastRow - 1 }, () => [null, null, null,null]);
-  range.setBackgrounds(defaultBackgrounds);
-}
+// // 文字列の整形に使う共通関数 
 
 // ----------------【会社名変換】----------------
 // 会社名変換

@@ -1,11 +1,31 @@
-// 重複企業をあらかじめ確認し作業効率化、また同じ企業に営業をかけるミスを防ぐため、重複処理を実施する
-// 【処理内容】
-// 1.イベントリストサイトの１ページ分の企業名と詳細URLし取得し重複企業チェックシートのA・B列に貼り付け（別途、javascriptのスクリプトで取得後、手動で貼り付け）
+// アタックリストに記載する前に重複企業をあらかじめ確認し作業効率化、また同じ企業に営業をかけるミスを防ぐため、重複処理を実施する
+// 【処理内容】１は手動実行。２〜３が自動化範囲。
+// 1.データベースサイト（リサーチ対象の企業情報が載ったWebサイト）の１ページ分の企業名と詳細URLを取得。
+    // 重複企業チェックシートのA・B列に貼り付け
 // 2.企業名を整形し、アタックリストの企業名（B列）と照合
 // 3.重複していたらA列の背景色を黄色に、C列に整形後の企業名を出力
 // 3.重複していなければC列に整形後の企業名を出力、D列に検索リンクを出力
 
 
+// ----------------【重複チェックシートのリセット】---------------- 
+// 処理内容１の前に重複チェックシートのリセットを行う（カスタムメニューより呼び出す）
+function resetDuplicateCheckSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName("重複企業チェック");
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;  // データがなければ終了
+
+  // 2行目以降のA〜D列のデータを削除
+  sheet.getRange("A2:D" + lastRow).clearContent();
+
+  // 背景色だけをデフォルト（null)に戻す
+  const range = sheet.getRange("A2:D" + lastRow);
+  const defaultBackgrounds = Array.from({ length: lastRow - 1 }, () => [null, null, null,null]);
+  range.setBackgrounds(defaultBackgrounds);
+}
+
+// ----------------【重複チェック】---------------- 
 function checkDuplicateOnEdit() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName("重複企業チェック");

@@ -85,6 +85,7 @@ function formatOnEdit(e) {
 
 
 // アタックリストシートの会社名を一括で整形する（会社名変換のコード改修後、既存データの企業名を修正するため！）
+// カスタムメニューより呼び出す
 function formatCompanyNames() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("アタックリスト");
   const values = sheet.getRange("B2:B" + sheet.getLastRow()).getValues();

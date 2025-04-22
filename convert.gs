@@ -125,7 +125,7 @@ function convert_phonenumber(text) {
     .replace(/-+$/g, "")// 末尾のハイフンをすべて削除
     .replace(/\s+/g, "")// 不要なスペースを削除
 
-   text = text.trim
+   text = text.trim();
     
   // ハイフンが1つ以上含まれていたら、それをそのまま使う
   if (text.includes('-')) {

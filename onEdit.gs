@@ -1,6 +1,6 @@
 function onEdit(e) {
   // 「mgmt」シートの実行判定欄が空欄の場合は処理を開始しない
-  if (e.source.getSheetByName("mgmt").getRange("B11").getValue() === "") {
+  if (e.source.getSheetByName("mgmt").getRange("B1").getValue() === "") {
     Logger.log("トリガーが無効のため処理を終了します。");
     return;
   }

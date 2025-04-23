@@ -7,7 +7,6 @@ function onOpen() {
   // 「重複チェック」メニューを追加
   ui.createMenu('重複チェック')
     .addItem('重複企業チェックシートをリセット', 'resetDuplicateCheckSheet') 
-    .addItem('重複企業チェックを実行', 'checkDuplicateOnEdit') 
     .addToUi();  
 
 }

@@ -1,4 +1,4 @@
-// // 文字列の整形に使う共通関数 
+// 文字列の整形に使う共通関数 
 
 // ----------------【会社名変換】----------------
 // 会社名変換
@@ -155,7 +155,55 @@ function formatPhoneNumberWithHyphen(number) {
   }
 }
 
+// ----------------【共通処理】----------------
 // 英数字・記号をすべて半角に統一
 function toHalfWidth(text) {
   return text.replace(/[Ａ-Ｚａ-ｚ０-９！-～]/g, s => String.fromCharCode(s.charCodeAt(0) - 65248));
 }
+
+// ----------------【email変換】----------------
+function convert_email(text) {
+  // 受け取ったデータが空っぽ（null や undefined）だったら、何もせずに空の文字列 "" を返す
+  if (!text) {
+    return "";
+  }
+ 
+ // 英数字・記号すべて半角に
+text = text.replace(/[\uFF01-\uFF5E]/g, function(s) {
+  return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+});
+
+// Logger.log ("半角変換後：" + text );
+// Logger.log("コロンのUnicode：" + text.charCodeAt(5));
+// for (let i = 0; i < text.length; i++) {
+//   Logger.log(`text[${i}] = '${text[i]}' / Unicode = ${text.charCodeAt(i)}`);
+// }
+
+//改行や空白を除去（正規表現に正しくかけるため）
+text = text.trim();
+
+  // 文字列からアドレス部分のみ抽出
+ const emailMatch = text.match(/^([Ee]mail|[Ee]-[mM]ail|[mM]ail)\s*[:]?\s*(.+)$/i);
+
+  //   `emailMatch` が見つかっていて（`null` でない）、
+  //   さらにその配列の3番目の要素（メールアドレス）が存在する場合に、アドレス部分のみ抽出。
+if (emailMatch && emailMatch[2]) {
+  // Logger.log("match[0] > " + emailMatch[0]);
+  // Logger.log("match[1] > " + emailMatch[1]);
+  // Logger.log("match[2] > " + emailMatch[2]);
+  text = emailMatch[2]
+} 
+else {
+  // Logger.log("メールアドレス形式にマッチしませんでした：" + text);
+}
+
+  // 日本語を空欄に置換
+  text = text.replace(/[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff9f\u4e00-\u9faf\u3400-\u4dbf]/g, '');
+
+  // その他の不要な空白文字を削除
+  text = text.replace(/\s/g, '');
+
+  return text.trim();
+}
+
+

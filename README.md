@@ -86,11 +86,11 @@ Webサイトから企業情報をコピー＆ペーストした際に、手動�
 
 ## 📝 補足
 
+- 参考スプレッドシート： https://docs.google.com/spreadsheets/d/1joufzsAf7cNObpx7MspTcK9PTUR1bGSKqlpQCaW-FvA/edit?usp=sharing
 - 対象シート：
   - `アタックリスト`
   - `重複企業チェック`
-- カスタムメニューから「重複企業チェックのリセット」、「重複企業チェックを実行」と「アタックリストの会社名の一括整形」も可能です。
--参考スプレッドシート： https://docs.google.com/spreadsheets/d/1joufzsAf7cNObpx7MspTcK9PTUR1bGSKqlpQCaW-FvA/edit?usp=sharing
+- カスタムメニューから「重複企業チェックのリセット」と「アタックリストの会社名の一括整形」も可能です。
 
 ---
 

@@ -1,22 +1,29 @@
 // Webサイトからのコピペの際、表記ゆれを手作業で修正する作業の効率化とミスを防ぐため、下記入力ルールに基づいて、企業リストに入力された入力値を変換する
-// 入力内容（および処理内容）
-// １．電話番号変換（F列）：
-  // ・全角数字→半角
-  // ・ハイフンを半角に統一
-  // ・不要な記号・文字は除去
-    // 「03(1234)5678」→「03-1234-5678」
-    // 「01-2345-6789（代表）」→「01-2345-6789」
-    // 「0312345678」→「03-1234-5678」
-// ２．社名（B列）：
+// 入力ルール（および処理内容）
+// １．社名（B列）：
   // ・カタカナは全角カタカナに統一
   // ・ローマ字や数字は半角に
   // ・「(株)」などの略称は正式名称に変換
   // ・会社名前後のスペースも削除
+    // 例）
     // 「アールズ 株式会社」 → 「アールズ株式会社」
     // 「（株）フューチャーリンク」 → 「株式会社フューチャーリンク」
     // 「ﾃｸﾉﾄﾞﾘｰﾑＶＩＳＩＯＮ株式会社」 → 「テクノドリームVISION株式会社」
-// 3．全項目→不要な空白を削除
-// 4．入力日を自動で出力
+// ２．電話番号変換（F列）：
+  // ・全角数字→半角
+  // ・ハイフンを半角に統一
+  // ・不要な記号・文字は除去
+    // 例）
+    // 「03(1234)5678」→「03-1234-5678」
+    // 「01-2345-6789（代表）」→「01-2345-6789」
+    // 「0312345678」→「03-1234-5678」
+// ３．メールアドレス（G列）：
+  // ・英数字・記号すべて半角に統一する
+  // ・メールアドレスのみ抽出
+    // 例）
+    // 「email:info@abc.com」 →　「info@abc.com」
+// ４．全項目→不要な空白を削除
+// ５．入力日を自動で出力
 
 
 function formatOnEdit(e) {
@@ -24,6 +31,7 @@ function formatOnEdit(e) {
   // アタックリストの列番号を設定
   const companyCol = 2; //会社名：B列 
   const phoneCol = 6; //電話：F列 
+  const mailCol = 7; //メール：G列 
   const dateCol = 11; // 入力日：K列 = 11
 
   const range = e.range;
@@ -39,7 +47,7 @@ function formatOnEdit(e) {
   let converted_text;
 
 
-  Logger.log("入力値：" + value);
+  // Logger.log("入力値：" + value);
   
  
   // 「アタックリスト」シートのB列が編集された場合
@@ -51,6 +59,11 @@ function formatOnEdit(e) {
     else if (col === phoneCol) {
       //電話番号変換関数を実行
       converted_text = convert_phonenumber(value);
+    }
+    // 「アタックリスト」シートのG列が編集された場合
+    else if (col === mailCol) {
+      //emailを整形
+      converted_text = convert_email(value);
     }
     // 「アタックリスト」シートのその他の項目が編集された場合
     else{
@@ -70,7 +83,7 @@ function formatOnEdit(e) {
     // 変換後の値を編集されたセルに再出力
     sheet.getRange(row, col).setValue(converted_text);
     
-    Logger.log("出力値：" + converted_text);
+    // Logger.log("出力値：" + converted_text);
     
     // 入力日が空欄の場合、出力
     const dateCell = sheet.getRange(row, dateCol);
